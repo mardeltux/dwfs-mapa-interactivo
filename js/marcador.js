@@ -7,6 +7,11 @@ marcadorModulo = (function () {
 
     // Crea un marcador y lo muestra en el mapa
   function mostrarMiMarcador (ubicacion) {
+    miMarcador = new google.maps.Marker({
+      position: ubicacion,
+      map: mapa,
+      title: direccionFormateada,
+    });
         /* Completar la función mostrarMiMarcador() para crear un marcador
         en la posición pasada por parámetro y mostrarlo en el mapa.
         Este marcador debe tener un título, una animación.
@@ -226,6 +231,7 @@ marcadorModulo = (function () {
       miPosicion = posicionCentral
     }
     lugaresModulo.buscarCerca(miPosicion)
+        
         // cambio el centro del mapa a miPosicion
     mapa.panTo(miPosicion)
   }
