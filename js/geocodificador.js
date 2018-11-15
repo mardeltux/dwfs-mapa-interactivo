@@ -6,7 +6,7 @@ geocodificadorModulo = (function () {
   function usaDireccion (direccion, funcionALlamar) {
     geocodificador.geocode({address : direccion}, function (result,status){
         console.log(status)
-        console.log(result[0].formatted_address)
+        //console.log(result[0].formatted_address)
         if (status == google.maps.GeocoderStatus.OK) {
           var coordenadas = result[0].geometry.location;
           funcionALlamar(direccion, coordenadas);

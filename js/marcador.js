@@ -4,13 +4,14 @@ marcadorModulo = (function () {
   var marcadoresRuta = [] // Los marcadores de la ruta
   var limites // Límites del mapa
   var infoVentana // La ventana con información
+  var marcador
 
     // Crea un marcador y lo muestra en el mapa
   function mostrarMiMarcador (ubicacion) {
     miMarcador = new google.maps.Marker({
       position: ubicacion,
       map: mapa,
-      title: direccionFormateada,
+      //title: direccionFormateada,
     });
         /* Completar la función mostrarMiMarcador() para crear un marcador
         en la posición pasada por parámetro y mostrarlo en el mapa.
@@ -175,8 +176,8 @@ marcadorModulo = (function () {
   }
 
     // Devuelve la posicion de la variable miMarcador
-  function damePosicion () {
-    return miMarcador.getPosition()
+  function damePosicion() {
+    return miMarcador && miMarcador.getPosition()
   }
 
     // Agrego el marcador con la ruta. Le asigna las letras correspondientes al marcador.
@@ -224,14 +225,14 @@ marcadorModulo = (function () {
     // Marco los lugares cerca de mi posición
   function marcar () {
     borrarMarcadores(marcadores)
-    console.log('lugar: ' + document.getElementById('tipoDeLugar').value)
+    //console.log('lugar: ' + document.getElementById('tipoDeLugar').value)
     if (marcadorModulo.existeMiMarcador()) {
       var miPosicion = marcadorModulo.damePosicion()
     } else {
       miPosicion = posicionCentral
     }
     lugaresModulo.buscarCerca(miPosicion)
-        
+
         // cambio el centro del mapa a miPosicion
     mapa.panTo(miPosicion)
   }
