@@ -96,6 +96,65 @@ direccionesModulo = (function () {
         /* Completar la función calcularYMostrarRutas , que dependiendo de la forma en que el
          usuario quiere ir de un camino al otro, calcula la ruta entre esas dos posiciones
          y luego muestra la ruta. */
+        var salida = document.getElementById("desde").value;
+        var llegada = document.getElementById("hasta").value;
+        var formaDeIr = document.getElementById("comoIr").value;
+        var lugaresIntermedios = document.getElementById("puntosIntermedios");
+        var lugaresIntermediosSeleccionados = [];
+
+        // corrigo valor de variable formaDeIr para que google la entienda.
+        switch (formaDeIr) {
+         case 'Auto':
+            formaDeIr = "DRIVING";
+            break;
+          case 'Bus/Subterraneo/Tren':
+            formaDeIr = "TRANSIT";
+            break;
+          case 'Caminando':
+            formaDeIr = "WALKING";
+            break;
+          default:
+        }
+
+        //busco todos lugares intermedios seleccionados y los pusheo a arrelgo de lugares intermedios.
+        for (var i = 0; i < lugaresIntermedios.length; i++) {
+          if (lugaresIntermedios.options[i].selected) {
+            lugaresIntermediosSeleccionados.push( {
+              location: lugaresIntermedios[i].value,
+              stopover: true
+            });
+          }
+        }
+
+        var request = {
+          origin: salida,
+          destination: llegada,
+          travelMode: formaDeIr,
+          waypoints: lugaresIntermediosSeleccionados,
+          optimizeWaypoints: true
+        }
+
+        servicioDirecciones.route(request, function(response, status) {
+          if (status == 'OK') {
+            mostradorDirecciones.setDirections(response);
+            var route = response.routes[0];
+            var summaryPanel = document.getElementById('directions-panel');
+            summaryPanel.innerHTML = '';
+
+            // Muestra información resumida para cada ruta
+            for (var i = 0; i < route.legs.length; i++) {
+              var routeSegment = i + 1;
+              summaryPanel.innerHTML += '<b>Segmento de ruta: ' + routeSegment +
+                 '</b><br>';
+              summaryPanel.innerHTML += route.legs[i].start_address + ' hasta ';
+              summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+              summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+           }
+         } else {
+           window.alert('Directions request failed due to ' + status);
+         }
+        });
+
   }
 
   return {
